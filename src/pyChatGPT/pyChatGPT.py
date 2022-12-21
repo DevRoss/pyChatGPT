@@ -63,7 +63,7 @@ class ChatGPT:
         self.__window_size = window_size
         self.__twocaptcha_apikey = twocaptcha_apikey
         self.__openai_auth_semi_automatic = openai_auth_semi_automatic
-        self.__cookies_path = cookies_path
+        self.__login_cookies_path = login_cookies_path
         if self.__auth_type not in [None, 'google', 'windowslive', 'openai']:
             raise ValueError('Invalid authentication type')
         self.__session_token = session_token
@@ -211,11 +211,11 @@ class ChatGPT:
         original_window = self.driver.current_window_handle
         self.driver.switch_to.new_window('tab')
 
-        if self.__cookies_path and os.path.exists(self.__cookies_path):
+        if self.__login_cookies_path and os.path.exists(self.__login_cookies_path):
             # load cookie json
             try:
                 self.__verbose_print('[login] loading cookies')
-                self.__load_chat_gpt_cookies(self.__cookies_path)
+                self.__load_chat_gpt_cookies(self.__login_cookies_path)
                 self.driver.get('https://chat.openai.com/chat')
                 self.__verbose_print('[login] Checking if login was successful')
                 WebDriverWait(self.driver, 5).until(
@@ -226,7 +226,7 @@ class ChatGPT:
                 self.driver.switch_to.window(original_window)
                 return
             except json.decoder.JSONDecodeError:
-                self.__verbose_print('[login] Cookies json is not valid, please check', self.__cookies_path)
+                self.__verbose_print('[login] Cookies json is not valid, please check', self.__login_cookies_path)
             except SeleniumExceptions.TimeoutException:
                 self.__verbose_print('[login] Login with cookies failed, trying login next.')
 
@@ -280,8 +280,8 @@ class ChatGPT:
             self.driver.save_screenshot('login_failed.png')
             raise e
             # raise ValueError('Login failed')
-        if self.__cookies_path:
-            self.__save_chat_gpt_cookies(self.__cookies_path)
+        if self.__login_cookies_path:
+            self.__save_chat_gpt_cookies(self.__login_cookies_path)
         # Close the tab
         self.__verbose_print('[login] Closing tab')
         self.driver.close()
