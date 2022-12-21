@@ -48,6 +48,7 @@ class ChatGPT:
         - window_size: (optional) window_size for web driver
         - twocaptcha_apikey: (optional) 2captcha apikey, for solving reCAPTCHA. Use the apikey only for auth_type='openai'
         - openai_auth_semi_automatic: (optional) allow solving reCAPTCHA by user when 2captcha method have failed.
+        - login_cookies_path: cookies path to be saved or loaded.
         '''
         self.__verbose = verbose
 
