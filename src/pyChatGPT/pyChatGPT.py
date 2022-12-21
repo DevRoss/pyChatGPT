@@ -3,7 +3,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver import DesiredCapabilities
 from selenium.common import exceptions as SeleniumExceptions
 import undetected_chromedriver as uc
 
@@ -546,3 +545,6 @@ class ChatGPT:
         '''
         self.__verbose_print('Resetting conversation')
         self.driver.find_element(By.LINK_TEXT, 'New chat').click()
+
+    def __del__(self):
+        self.close()
